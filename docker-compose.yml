@@ -1,0 +1,45 @@
+services:
+  node:
+    image: node:20.12.1-alpine
+    container_name: adonis_node
+    working_dir: /work
+    tty: true
+    environment:
+      - HOST=0.0.0.0
+    volumes:
+      - ./:/work
+      - /work/node_modules
+    ports:
+      - 46533:3333
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - adonis_network
+  postgres:
+    image: postgres:16.2
+    container_name: adonis_db
+    tty: true
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - ./docker/postgres-data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - 46534:5432
+    networks:
+      - adonis_network
+  redis:
+    image: redis:7.2.4
+    container_name: adonis_redis
+    restart: always
+    ports:
+      - 46535:6379
+    networks:
+      - adonis_network
+
+networks:
+  adonis_network:
+    external: true
