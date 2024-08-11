@@ -12,25 +12,24 @@ services:
     ports:
       - 46533:3333
     depends_on:
-      - postgres
+      - mysql
       - redis
     networks:
       - adonis_network
-  postgres:
-    image: postgres:16.2
+  mysql:
+    image: mysql:9.0
     container_name: adonis_db
-    tty: true
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
     volumes:
-      - ./docker/postgres-data:/var/lib/postgresql/data
+      - ./docker/mysql-data:/var/lib/mysql
     restart: always
     ports:
-      - 46534:5432
+      - 46534:3306
     networks:
-      - adonis_network
+      adonis_network:
+        ipv4_address: 172.30.0.3
   redis:
     image: redis:7.2.4
     container_name: adonis_redis
@@ -42,4 +41,7 @@ services:
 
 networks:
   adonis_network:
-    external: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
