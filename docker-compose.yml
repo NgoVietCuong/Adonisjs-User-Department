@@ -29,7 +29,7 @@ services:
       - 46534:3306
     networks:
       adonis_network:
-        ipv4_address: 172.30.0.3
+        ipv4_address: 192.168.100.11
   redis:
     image: redis:7.2.4
     container_name: adonis_redis
@@ -44,4 +44,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.30.0.0/16
+        - subnet: 192.168.100.0/24
