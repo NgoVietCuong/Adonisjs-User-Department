@@ -13,8 +13,8 @@ export default class extends BaseSchema {
       table.boolean('email_verified').notNullable().defaultTo(false)
       table.boolean('is_active').notNullable().defaultTo(true)
       table.string('role', 100).notNullable()
-      table.timestamp('created_at').notNullable()
-      table.timestamp('updated_at').notNullable()
+      table.timestamp('created_at').notNullable().defaultTo(this.now())
+      table.timestamp('updated_at').notNullable().defaultTo(this.now())
     })
   }
 
